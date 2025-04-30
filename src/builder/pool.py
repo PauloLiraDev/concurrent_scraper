@@ -32,5 +32,7 @@ class WebDriverPool:
     
     def shutdown(self):
         """Shut down all workers in the pool."""
+        # for worker in self.workers:
+        #     worker.driver.close()
         self.queue.queue.clear()
         self.workers.clear()

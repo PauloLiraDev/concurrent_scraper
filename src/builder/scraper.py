@@ -2,9 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
 
 from src.models.product import Product
 from src.settings import CHROME_OPTIONS, TARGET_URL, WAIT_TIME
@@ -15,7 +13,9 @@ class Scraper:
         for arg in CHROME_OPTIONS:
             options.add_argument(arg)
         
-        service = Service(ChromeDriverManager().install())
+        options.binary_location = "/opt/chrome/chrome"
+
+        service = webdriver.ChromeService("/opt/chromedriver")
         self.driver = webdriver.Chrome(
             service=service,
             options=options

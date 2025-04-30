@@ -10,7 +10,7 @@
             "request": "launch",
             "module": "uvicorn",
             "args": [
-                "src.automation.app:app",
+                "automation.app:app",
             ],
             "jinja": true
         }
