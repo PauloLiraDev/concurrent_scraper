@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+# For local tests only
 import os
 import sys
 import subprocess

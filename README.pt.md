@@ -51,14 +51,14 @@ GET /docs
 Acesse a documentação interativa Swagger da API
 
 ## Testes
-
 ```bash
-# Executar todos os testes
-python run_tests.py
 
-# Executar testes específicos
-pytest src/tests/test_unit.py -v
-pytest src/tests/test_integration.py -v
+docker compose exec api pytest -q
+docker compose exec api ruff check .
+```
+## Encerramento
+```bash
+docker compose down
 ```
 
 ## Configuração
