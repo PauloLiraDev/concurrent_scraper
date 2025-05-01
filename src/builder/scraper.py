@@ -7,6 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from src.models.product import Product
 from src.settings import CHROME_OPTIONS, TARGET_URL, WAIT_TIME
 
+
 class Scraper:
     def __init__(self):
         options = Options()
@@ -22,34 +23,37 @@ class Scraper:
         )
         self.wait = WebDriverWait(self.driver, WAIT_TIME)
 
-    def scrape_category(self, category: str) -> list[Product]:
+    def scrape_category(self, category: str|None) -> list[Product]:
         """
         Scrape the products from a specific category.
         Args:
-            category (str): The category to scrape.
+            category (str|None): The category to scrape.
         Returns:
             list[Product]: A list of products in the specified category.
         """
 
         self.driver.get(f"{TARGET_URL}")
 
-        # Wait the category dropdown to be clickable
-        self.wait.until(EC.element_to_be_clickable((By.ID, "category-filter"))).click()
 
-        # Click on span with the category name
-        self.wait.until(EC.element_to_be_clickable((By.XPATH, f"//span[text()='{category.title()}']"))).click()
-        
-        
-        
+        if category:
+            # Wait the category dropdown to be clickable
+            category_filter = self.wait.until(EC.element_to_be_clickable((By.ID, "category-filter")))
+            self.driver.execute_script("arguments[0].click();", category_filter)
 
+            # Click on span with the category name
+            category_selection = self.wait.until(EC.element_to_be_clickable((By.XPATH, f"//span[text()='{category.title()}']")))
+            self.driver.execute_script("arguments[0].click();", category_selection)
+        
         products = self.get_products()
         
         # Pagination logic:
-        pagination_range_end = self.wait.until(EC.element_to_be_clickable((By.ID, "pagination-range-end")))
-        pagination_range_total = self.wait.until(EC.element_to_be_clickable((By.ID, "pagination-total")))
+        pagination_range_end = self.wait.until(EC.presence_of_element_located((By.ID, "pagination-range-end")))
+        pagination_range_total = self.wait.until(EC.presence_of_element_located((By.ID, "pagination-total")))
         while pagination_range_end.text != pagination_range_total.text:
             # Click on the next page
-            self.wait.until(EC.element_to_be_clickable((By.ID, "next-page"))).click()
+            next_page = self.wait.until(EC.presence_of_element_located((By.ID, "next-page")))
+            self.driver.execute_script("arguments[0].click();", next_page)
+
             # Wait for the next page to load
             self.wait.until(EC.presence_of_element_located((By.ID, "product-table")))
             products += self.get_products()

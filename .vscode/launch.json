@@ -10,9 +10,22 @@
             "request": "launch",
             "module": "uvicorn",
             "args": [
-                "automation.app:app",
+                "src.automation.app:app",
             ],
             "jinja": true
+        },
+        {
+            "name": "Python Debugger: Unit Tests",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "pytest",
+            "args": [
+                "src/tests/test_unit.py",
+                "-v"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "cwd": "${workspaceFolder}"
         }
     ]
 }

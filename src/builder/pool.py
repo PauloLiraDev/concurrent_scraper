@@ -4,6 +4,10 @@ import queue
 import asyncio
 from src.settings import POOL_SIZE
 from src.builder.scraper import Scraper
+from src.log import get_logger
+
+# Initialize the logger for this module
+logger = get_logger() 
 
 class WebDriverPool:
     def __init__(self):
@@ -32,7 +36,16 @@ class WebDriverPool:
     
     def shutdown(self):
         """Shut down all workers in the pool."""
-        # for worker in self.workers:
-        #     worker.driver.close()
-        self.queue.queue.clear()
-        self.workers.clear()
+        try:
+            # Close all webdriver instances
+            for worker in self.workers:
+                try:
+                    worker.driver.quit()  # Use quit() instead to ensure full cleanup
+                    logger.info("Successfully closed WebDriver instance")
+                except Exception as e:
+                    logger.error(f"Error closing WebDriver: {e}")
+        finally:
+            # Clear queues and lists
+            self.queue.queue.clear()
+            self.workers.clear()
+            logger.info("WebDriver pool resources cleared")
