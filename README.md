@@ -10,7 +10,6 @@ Concurrent web scraping API built with FastAPI and Selenium to efficiently extra
 
 ```bash
 
-cd src
 docker compose up -d --build
 
 ```

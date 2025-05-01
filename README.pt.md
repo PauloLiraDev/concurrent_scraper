@@ -10,7 +10,6 @@ API de web scraping concorrente construída com FastAPI e Selenium para extrair 
 
 ```bash
 
-cd src
 docker compose up -d --build
 
 ```
