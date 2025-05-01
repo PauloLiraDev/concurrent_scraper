@@ -31,17 +31,17 @@ app = FastAPI(lifespan=lifespan)
 async def scrape(category: str | None = None):
     """
     Endpoint to scrape products from the specified category.
-    
+
     Args:
         category (Optional[str]): The category to scrape products from
-        
+
     Returns:
         list[Product]: List of products from the specified category
-        
+
     Raises:
         HTTPException: If an error occurs during the scraping process
     """
-    logger.info(f"Received scrape request for category: {category or 'all'}")
+    logger.info(f"Received scrape request for category: {category or 'all categories'}")
     try:
         # Use the ScrapingService to scrape the category
         products = await service.scrape_category(category)
@@ -52,4 +52,3 @@ async def scrape(category: str | None = None):
     except Exception as e:
         logger.error(f"Error during scraping: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
-    

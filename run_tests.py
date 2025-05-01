@@ -13,7 +13,6 @@ def main():
     """Run all tests and checks before pushing to git."""
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
     
-    # Lista de comandos a serem executados
     commands = [
         # Formatação e lint
         "black src/ --check",
@@ -24,9 +23,6 @@ def main():
         
         # Testes de integração (usando mock)
         "python -m pytest src/tests/test_integration.py -v",
-
-        # Encerra todos os chromes abertos
-        "pkill -f chrome",
     ]
     
     # Executa cada comando
