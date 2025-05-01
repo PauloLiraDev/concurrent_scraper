@@ -29,16 +29,8 @@ jobs:
           unzip /tmp/chrome-linux64.zip -d /opt/
           cp -r /opt/chromedriver-linux64/* /opt/
           cp -r /opt/chrome-linux64 /opt/chrome
-          
-      - name: Check formatting with Black
-        run: black --check src/
         
-      - name: Run Ruff linting
-        run: ruff check src/
-        
-      - name: Run Unit Tests
-        run: pytest src/tests/test_unit.py -v
-        
-      - name: Run Integration Tests
-        run: pytest src/tests/test_integration.py -v
-      
+      - name: Run All Tests
+        env:
+          PYTHONPATH: ${{ github.workspace }}
+        run: python3 src/run_tests.py
