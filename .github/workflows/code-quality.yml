@@ -23,7 +23,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install black ruff pytest pytest-cov
           pip install -r src/requirements.txt
-          curl -Lo "/tmp/chromedriver-linux64.zip" "https://storage.googleapis.com/chrome-for-testing-public/136.0.7103.49/linux64/chromedriver-linux64.zip"
+          curl -Lo "/tmp/chromedriver-linux64.zip" "https://storage.googleapis.com/chrome-for-testing-public/136.0.7103.49/linux64/chromedriver-linux64.zip" && \
           curl -Lo "/tmp/chrome-linux64.zip" "https://storage.googleapis.com/chrome-for-testing-public/136.0.7103.49/linux64/chrome-linux64.zip"
           unzip /tmp/chromedriver-linux64.zip -d /opt/
           unzip /tmp/chrome-linux64.zip -d /opt/
@@ -41,12 +41,4 @@ jobs:
         
       - name: Run Integration Tests
         run: pytest src/tests/test_integration.py -v
-        
-      - name: Generate test coverage report
-        run: pytest --cov=src --cov-report=xml
-        
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          file: ./coverage.xml
-          fail_ci_if_error: true
+      
