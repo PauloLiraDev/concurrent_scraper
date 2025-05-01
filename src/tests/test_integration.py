@@ -35,7 +35,6 @@ async def test_scrape_endpoint_without_category():
         assert len(categories) > 0
 
 
-# Teste de erro (simulado)
 @pytest.mark.asyncio
 async def test_scrape_endpoint_error():
     """Test for handling errors during scraping."""
