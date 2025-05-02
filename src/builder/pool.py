@@ -69,7 +69,9 @@ class WebDriverPool:
             for worker in self.workers:
                 try:
                     worker.driver.quit()  # Use quit() instead to ensure full cleanup
-                    logger.info(f"Successfully closed WebDriver instance for worker {worker.identification}")
+                    logger.info(
+                        f"Successfully closed WebDriver instance for worker {worker.identification}"
+                    )
                 except Exception as e:
                     logger.error(f"Error closing WebDriver: {e}")
         finally:
