@@ -1,6 +1,7 @@
 # builder/pool.py
 import queue
 import asyncio
+import concurrent.futures
 from src.settings import POOL_SIZE
 from src.builder.scraper import Scraper
 from src.log import get_logger
@@ -17,7 +18,7 @@ class WebDriverPool:
         self.workers = []
 
         for i in range(POOL_SIZE):
-            scraper = Scraper()
+            scraper = Scraper(identification=i + 1)
             self.queue.put(scraper)
             self.workers.append(scraper)
 
@@ -48,14 +49,17 @@ class WebDriverPool:
             This is a blocking operation. For non-blocking behavior, use scrape_async instead.
         """
         scraper = self.queue.get()
+        logger.info(f"Scraper {scraper.identification} obtained from pool")
         try:
             return scraper.scrape_category(category)
         finally:
             self.queue.put(scraper)
+            logger.info(f"Scraper {scraper.identification} returned to pool")
 
     async def scrape_async(self, category: str):
         loop = asyncio.get_running_loop()
-        return await loop.run_in_executor(None, self.scrape, category)
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            return await loop.run_in_executor(executor, self.scrape, category)
 
     def shutdown(self):
         """Shut down all workers in the pool."""
@@ -64,7 +68,7 @@ class WebDriverPool:
             for worker in self.workers:
                 try:
                     worker.driver.quit()  # Use quit() instead to ensure full cleanup
-                    logger.info("Successfully closed WebDriver instance")
+                    logger.info(f"Successfully closed WebDriver instance for worker {worker.identification}")
                 except Exception as e:
                     logger.error(f"Error closing WebDriver: {e}")
         finally:

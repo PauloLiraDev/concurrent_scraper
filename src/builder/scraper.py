@@ -9,13 +9,18 @@ from src.settings import CHROME_OPTIONS, TARGET_URL, WAIT_TIME
 
 
 class Scraper:
-    def __init__(self):
+    def __init__(self, identification: int):
+        """
+        Initialize the Scraper with a specific identification number.
+        Args:
+            identification (int): The identification number for the scraper instance.
+        """
+        self.identification = identification
         options = Options()
         for arg in CHROME_OPTIONS:
             options.add_argument(arg)
 
         options.binary_location = "/opt/chrome/chrome"
-
         service = webdriver.ChromeService("/opt/chromedriver")
         self.driver = webdriver.Chrome(service=service, options=options)
         self.wait = WebDriverWait(self.driver, WAIT_TIME)
