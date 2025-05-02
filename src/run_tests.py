@@ -46,5 +46,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-    # Close all Chrome processes
     os.system("pkill -f chrome")
