@@ -1,5 +1,4 @@
 # builder/pool.py
-import threading
 import queue
 import asyncio
 from src.settings import POOL_SIZE
@@ -12,7 +11,8 @@ logger = get_logger()
 
 class WebDriverPool:
     def __init__(self):
-        self.lock = threading.Lock()
+        # The queue.Queue is thread-safe and sufficient for managing concurrency,
+        # so no additional locking mechanism (e.g., threading.Lock) is required.
         self.queue = queue.Queue(maxsize=POOL_SIZE)
         self.workers = []
 
@@ -22,6 +22,13 @@ class WebDriverPool:
             self.workers.append(scraper)
 
     def has_available_worker(self) -> bool:
+        """
+        Check if there is an available worker in the pool.
+        This method checks if the queue is not empty, indicating that there are available
+        Scraper instances ready for use.
+        Returns:
+            bool: True if there is an available worker, False otherwise.
+        """
         return not self.queue.empty()
 
     def scrape(self, category: str | None):

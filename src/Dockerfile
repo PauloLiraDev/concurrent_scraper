@@ -1,6 +1,6 @@
 FROM python:3.11-slim
 
-# Instala dependências do sistema
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     wget \
     curl \
@@ -22,23 +22,21 @@ RUN apt-get update && apt-get install -y \
     cp -r /opt/chrome-linux64 /opt/chrome
 
 
-# Adiciona variáveis de ambiente para Chrome em Docker
-ENV PYTHONUNBUFFERED=1
-ENV DISPLAY=:99
-
-# Define diretório de trabalho
+# Define the working directory
 WORKDIR /src
 
+# Set environment variables
 ENV PYTHONPATH=/
+ENV PYTHONUNBUFFERED=1
 
-# Copia o código
+# Copy the project files
 COPY . .
 
-# Instala dependências Python
+# Install Python dependencies
 RUN pip install -r requirements.txt
 
-# Expõe a porta da aplicação
+# Expose the port the app runs on
 EXPOSE 8000
 
-# Comando para rodar a aplicação
-CMD ["uvicorn", "src.automation.app:app", "--host", "0.0.0.0", "--port", "8000"]
+# Command to run the application
+CMD ["uvicorn", "automation.app:app", "--host", "0.0.0.0", "--port", "8000"]

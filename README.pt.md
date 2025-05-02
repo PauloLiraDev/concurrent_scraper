@@ -60,6 +60,11 @@ docker compose exec api python -m run_tests
 docker compose down
 ```
 
+## Verificando Logs
+```bash
+docker compose logs -f api
+```
+
 ## Configuração
 
 As configurações podem ser ajustadas através de variáveis de ambiente:
