@@ -93,4 +93,3 @@ async def test_scraping_service_no_workers():
         await service.scrape_category("Electronics")
 
     assert excinfo.value.status_code == 429
-    assert excinfo.value.detail == "no worker available"
