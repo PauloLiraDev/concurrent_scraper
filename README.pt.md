@@ -52,8 +52,8 @@ Acesse a documentação interativa Swagger da API
 ## Testes
 ```bash
 
-docker compose exec api pytest -q
-docker compose exec api ruff check .
+docker compose exec api python -m run_tests
+
 ```
 ## Encerramento
 ```bash
