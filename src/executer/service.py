@@ -21,7 +21,9 @@ class ScrapingService:
 
         # Check if there is an available worker in the pool
         if not self.pool.has_available_worker():
-            raise HTTPException(status_code=429, detail="No worker available, try again later.")
+            raise HTTPException(
+                status_code=429, detail="No worker available, try again later."
+            )
 
         products = await self.pool.scrape_async(category)
         return products
