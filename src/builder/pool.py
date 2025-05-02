@@ -18,6 +18,7 @@ class WebDriverPool:
         self.workers = []
 
         for i in range(POOL_SIZE):
+            logger.info(f"Creating worker {i + 1}")
             scraper = Scraper(identification=i + 1)
             self.queue.put(scraper)
             self.workers.append(scraper)
